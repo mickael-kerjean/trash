@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useContext } from 'react';
 import './App.css';
+import { stateManager, configContext } from "./model";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const Debug = stateManager(function(props) {
+    return (
+        <React.Fragment>
+          <strong onClick={ () => props.dispatch("CLEAR") }>GLOBAL STATE (HOC)</strong>
+          <pre>{ JSON.stringify(props.state, null, 4) }</pre>
+
+          <br/>
+          
+          <strong>SITECORE CONFIG (WITH CONTEXT)</strong>
+          <pre>{ JSON.stringify(useContext(configContext), null, 4) }</pre>
+
+          <br/>
+
+          <button onClick={() => window.localStorage.removeItem("state")}>LOCALSTORAGE CLEAR</button>
+        </React.Fragment>
+    );  
+});
+
+function App(){
+    return (
+        <div className="App">
+		  <header className="App-header">
+            <Debug />
+          </header>
+        </div>
+    );
 }
 
 export default App;
