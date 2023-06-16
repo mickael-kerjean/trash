@@ -17,6 +17,13 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: docker
+          platforms: ${{ matrix.platform }}
+          push: false
+          tags: machines/test:latest
       - name: Run
         run: |
           uname -m
